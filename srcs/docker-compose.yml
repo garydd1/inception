@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariaDB/
+      dockerfile: Dockerfile
+    image: dbimage
+    restart: always
+    env_file: .env
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    container_name: dbcontainer  
+
+volumes:
+  mariadb-data:
+   driver: local
+   driver_opts:
+           device: /home/dgarizad/data
+           o: bind
+           type: none
+
