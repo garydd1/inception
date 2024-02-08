@@ -1,7 +1,22 @@
 version: '3.8'
 
 services:
-  mariadb:
+ wordpress:
+  build:
+    context: ./requirements/wordpress
+    dockerfile: Dockerfile
+  image: wpimage
+  restart: always
+  env_file: .env
+  ports:
+    -  "8080:80"
+  depends_on: 
+    -  mariadb
+  networks:
+    -  inceptionnet
+
+
+ mariadb:
     build:
       context: ./requirements/mariaDB/
       dockerfile: Dockerfile
@@ -10,7 +25,9 @@ services:
     env_file: .env
     volumes:
       - mariadb-data:/var/lib/mysql
-    container_name: dbcontainer  
+    container_name: dbcontainer
+    networks:
+      - inceptionnet
 
 volumes:
   mariadb-data:
@@ -20,3 +37,6 @@ volumes:
            o: bind
            type: none
 
+networks:
+  inceptionnet:
+    driver: bridge
