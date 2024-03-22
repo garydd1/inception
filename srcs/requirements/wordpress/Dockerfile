@@ -8,9 +8,42 @@ RUN apt-get update \
 
 RUN mkdir -p /var/www/html
 
-RUN wget https://wordpress.org/latest.tar.gz && \
-    tar -xvzf latest.tar.gz && \
-    rm latest.tar.gz && \
-    mv wordpress /var/www/html 
+# Create the directory for PHP-FPM socket
 
-CMD ["bash"] 
+#Install Wordpress
+
+#RUN wget https://wordpress.org/latest.tar.gz && \
+#   tar -xvzf latest.tar.gz && \
+#    rm latest.tar.gz && \
+#    mv wordpress /var/www/html
+
+#COPY wp-config.php /var/www/html
+COPY init.sh /var/www/html
+
+# Install Tini
+ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
+RUN chmod +x /tini
+#Install WP-CLI
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
+
+# Use tini as the entrypoint
+ENTRYPOINT ["/tini", "--"]
+
+
+RUN mkdir -p /run/php/
+RUN chmod 755 /run/php/
+
+WORKDIR /var/www/html
+
+#script for WpCLI
+#CMD ["tail", "-f", "/dev/null"]
+CMD ["bash", "init.sh"]
+
+
+
+# Start php-fpm
+#CMD ["/usr/sbin/php-fpm7.4", "-F"]
+#CMD ["bash"] 
