@@ -7,10 +7,12 @@ services:
     context: ./requirements/wordpress
     dockerfile: Dockerfile
   image: wpimage:latest
+  volumes:
+    - ./requirements/public_html:/public_html
   restart: always
+  expose:
+    -  9000
   env_file: .env
-  ports:
-    -  "8080:80"
   depends_on: 
     -  mariadb
   container_name: wpcontainer
@@ -31,7 +33,24 @@ services:
     networks:
       - inceptionnet
 
+ nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    image: ngximage:latest
+    restart: always
+    volumes:
+    - ./requirements/public_html:/public_html
+    ports:
+      - "80:80"
+    depends_on:
+      - wordpress
+    container_name: ngxcontainer
+    networks:
+      - inceptionnet
+
 volumes:
+  # wpdata:
   mariadb-data:
    driver: local
    driver_opts:

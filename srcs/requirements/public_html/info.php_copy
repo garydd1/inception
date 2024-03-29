@@ -1,0 +1,35 @@
+<?php
+// Database connection parameters
+$servername = "mariadb";
+$username = "dbking";
+$password = "dgarizad";
+$dbname = "mydatabasedg";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}else {
+  echo "Connection Successiuuu";
+}
+
+// Query to retrieve data
+$sql = "SHOW DATABASES;";
+$result = $conn->query($sql);
+
+// Check if data was retrieved
+if ($result->num_rows > 0) {
+    // Output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "ID: " . $row["id"]. " - Name: " . $row["name"]. "<br>";
+    }
+} else {
+    echo "0 results";
+}
+
+// Close connection
+$conn->close();
+?>
+
