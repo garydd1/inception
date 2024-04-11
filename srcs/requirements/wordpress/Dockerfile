@@ -18,7 +18,7 @@ RUN mkdir -p /var/www/html
 #    mv wordpress /var/www/html
 
 #COPY wp-config.php /var/www/html
-COPY init.sh /var/www/html
+COPY tools/init.sh .
 
 # Install Tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
@@ -36,7 +36,7 @@ ENTRYPOINT ["/tini", "--"]
 RUN mkdir -p /run/php/
 RUN chmod 755 /run/php/
 
-WORKDIR /var/www/html
+# WORKDIR /var/www/html
 
 #script for WpCLI
 #CMD ["tail", "-f", "/dev/null"]

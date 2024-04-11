@@ -15,8 +15,8 @@ RUN mkdir -p /run/mysqld/ && \
 #NOT HERE. 
 
 # Copy the initialization SQL script and .cnf file into the container
-COPY init.sql /docker-entrypoint-initdb.d/
-COPY init.sh /etc/mysql/
+COPY tools/init.sql /docker-entrypoint-initdb.d/
+COPY tools/init.sh /etc/mysql/
 RUN chmod +x /etc/mysql/init.sh
 
 # Expose the default MariaDB port
