@@ -15,6 +15,7 @@ services:
   env_file: .env
   depends_on: 
     -  mariadb
+    -  redis
   container_name: wpcontainer
   networks:
     -  inceptionnet
@@ -49,6 +50,21 @@ services:
     networks:
       - inceptionnet
 
+ redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    image: redisimage:latest
+    restart: always
+    env_file: .env
+    # volumes:
+    # - /home/dgarizad/data/wpsite:/var/www/html
+    # depends_on:
+    #   - wordpress
+    container_name: rediscontainer
+    networks:
+      - inceptionnet
+      
 volumes:
   # wpdata:
   mariadb-data:
