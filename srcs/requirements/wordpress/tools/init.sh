@@ -10,9 +10,7 @@ wp core install --allow-root --url=${WP_URL} --title=${WP_TITLE} --admin_user=${
 wp user create "${WP_USER}" "dgarizado2@gmail.com" --user_pass="${WP_PASSWORD}" --role=author --allow-root
 
 sed -i 's/^listen =.*/listen = 9000/' /etc/php/7.4/fpm/pool.d/www.conf
-echo "define( 'WP_CACHE', true );
-define( 'WP_REDIS_HOST', 'rediscontainer' );
-define( 'WP_REDIS_PORT', 6379 );" >> ./wp-config.php
+sed -i "/Happy publishing/i define( 'WP_CACHE', true );\ndefine( 'WP_REDIS_HOST', 'rediscontainer' );\ndefine( 'WP_REDIS_PORT', 6379 );" wp-config.php
 # #redis bonus
 wp plugin install redis-cache --activate --allow-root
 wp redis enable --allow-root
