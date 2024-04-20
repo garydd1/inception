@@ -9,24 +9,26 @@ echo "$FTP_USR:$FTP_PWD" | /usr/sbin/chpasswd
 echo "$FTP_USR" | tee -a /etc/vsftpd.userlist 
 
 
-mkdir /home/$FTP_USR/ftp
+# mkdir /home/$FTP_USR/ftp
+# mkdir -p /var/www/html
 
-
-chown nobody:nogroup /home/$FTP_USR/ftp
-chmod a-w /home/$FTP_USR/ftp
+# chown nobody:nogroup /home/$FTP_USR/ftp
+# chmod a-w /home/$FTP_USR/ftp
 
 mkdir /home/$FTP_USR/ftp/files
 chown $FTP_USR:$FTP_USR /home/$FTP_USR/ftp/files
+# chown -R $FTP_USR:$FTP_USR /var/www/html
 
 sed -i -r "s/#write_enable=YES/write_enable=YES/1"   /etc/vsftpd.conf
 sed -i -r "s/#chroot_local_user=YES/chroot_local_user=YES/1"   /etc/vsftpd.conf
 # sed -i "s/listen=NO/listen=YES/" /etc/vsftpd.conf
 
+# local_root=/var/www/html
 echo "
 local_enable=YES
 allow_writeable_chroot=YES
 pasv_enable=YES
-local_root=/home/sami/ftp
+local_root=/home/dgarizad/ftp/files
 pasv_min_port=21100
 pasv_max_port=21110
 userlist_file=/etc/vsftpd.userlist" >> /etc/vsftpd.conf

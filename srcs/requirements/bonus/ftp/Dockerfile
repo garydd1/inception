@@ -2,7 +2,8 @@
 FROM debian:11.8
 
 COPY tools/init.sh .
-
+RUN mkdir -p /home/dgarizad/ftp
+RUN chmod 777 /home/dgarizad/ftp
 # Install vsftpd
 RUN apt-get update && \
     apt-get install -y vsftpd && \
