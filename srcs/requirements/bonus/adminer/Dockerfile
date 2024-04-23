@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:11.8
 
 
 RUN apt -y update 
