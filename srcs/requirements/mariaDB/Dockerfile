@@ -1,4 +1,4 @@
-# Use the official Debian image as the base image
+# We Download Debian:11.8 just once for optimization. Its done in the Base Image build in /tools
 FROM debian:11.8
 
 # Install necessary packages
@@ -10,10 +10,7 @@ RUN apt-get update && \
 RUN mkdir -p /run/mysqld/ && \
     chown -R mysql:mysql /run/mysqld/ && \
     chmod -R 777 /run/mysqld
-
-# Set environment variables for MariaDB
-#NOT HERE. 
-
+RUN chmod -R 777 /var/lib/mysql
 # Copy the initialization SQL script and .cnf file into the container
 COPY tools/init.sql /docker-entrypoint-initdb.d/
 COPY tools/init.sh /etc/mysql/
@@ -22,17 +19,15 @@ RUN chmod +x /etc/mysql/init.sh
 # Expose the default MariaDB port
 EXPOSE 3306
 
-# Install Tini
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
-RUN chmod +x /tini
+# # Install Tini
+# ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
+# RUN chmod +x /tini
 
-# Set the entrypoint using Tini and run the init.sh script
-ENTRYPOINT ["/tini", "--"]
-#ENTRYPOINT ["/tini", "--debug", "/etc/mysql/init.sh"]
+# # Set the entrypoint using Tini as PID1
+# ENTRYPOINT ["/tini", "--"]
 
 # Start the MariaDB service
-#CMD ["mysqld", "--init-file=/docker-entrypoint-initdb.d/init.sql"]
-
+RUN apt-get clean
 #exec the script for initialize the service
 CMD ["bash", "/etc/mysql/init.sh"]
 

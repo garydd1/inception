@@ -7,7 +7,7 @@
 adduser -D $FTP_USR
 echo "User $FTP_USR created"
 echo "$FTP_USR:$FTP_PWD" | chpasswd
-chown -R $FTP_USR:$FTP_USR /home/dgarizad/ftp/files
+chown -R $FTP_USR:$FTP_USR /home/dgarizad/ftp
 # fi
 
 # Start vsftpd

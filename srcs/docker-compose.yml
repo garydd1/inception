@@ -5,7 +5,7 @@ services:
   build:
     context: ./requirements/wordpress
     dockerfile: Dockerfile
-  image: wpimage:latest
+  image: wordpress
   volumes:
     - /home/dgarizad/data/wpsite:/var/www/html
   restart: always
@@ -22,8 +22,10 @@ services:
     build:
       context: ./requirements/mariaDB/
       dockerfile: Dockerfile
-    image: dbimage
+    image: mariadb
     restart: always
+    expose:
+     - 3306
     env_file: .env
     volumes:
       - mariadb-data:/var/lib/mysql
@@ -35,7 +37,7 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
-    image: ngximage:latest
+    image: nginx
     restart: always
     env_file: .env
     volumes:
@@ -48,11 +50,12 @@ services:
     networks:
       - inceptionnet
 
+ #BONUS:
  redis:
     build:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile
-    image: redisimage:latest
+    image: redis
     restart: always
     env_file: .env
     container_name: rediscontainer
@@ -63,7 +66,7 @@ services:
     build:
       context: ./requirements/bonus/ftp
       dockerfile: Dockerfile
-    image: ftpimage:latest
+    image: ftp
     restart: always
     # depends_on:
     #   - wordpress
@@ -81,7 +84,7 @@ services:
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile
-    image: admimage:latest
+    image: adminer
     restart: always
     depends_on:
       - mariadb
@@ -96,7 +99,7 @@ services:
     build:
       context: ./requirements/bonus/static
       dockerfile: Dockerfile
-    image: statimage:latest
+    image: static
     restart: always
     depends_on:
       - mariadb
@@ -111,7 +114,7 @@ services:
     build:
       context: ./requirements/bonus/extra
       dockerfile: Dockerfile
-    image: xtrimage:latest
+    image: extra
     restart: always
     depends_on:
       - mariadb
@@ -129,6 +132,12 @@ services:
 
 
 volumes:
+  wordpress:
+   driver: local
+   driver_opts:
+           device: /home/dgarizad/data/wpsite
+           o: bind
+           type: none
   mariadb-data:
    driver: local
    driver_opts:

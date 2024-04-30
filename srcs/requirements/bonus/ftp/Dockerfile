@@ -20,14 +20,18 @@ RUN sed -i "s/#local_enable=YES/local_enable=YES/" /etc/vsftpd/vsftpd.conf && \
     echo "pasv_min_port=21000" >> /etc/vsftpd/vsftpd.conf && \
     echo "pasv_max_port=21000" >> /etc/vsftpd/vsftpd.conf && \
     echo "pasv_address=0.0.0.0" >> /etc/vsftpd/vsftpd.conf && \
-    echo "local_root=/home/dgarizad/ftp/files" >> /etc/vsftpd/vsftpd.conf && \
+    echo "local_root=/home/dgarizad/ftp" >> /etc/vsftpd/vsftpd.conf && \
     echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf && \
     echo "seccomp_sandbox=NO" >> /etc/vsftpd/vsftpd.conf
 
 RUN rm -f /var/cache/apk/*
-# # Install Tini
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
-RUN chmod +x /tini
+
+# # Install dumb-init
+# RUN apk add --no-cache dumb-init
+
+# # Set the entry point using dumb-init
+# ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+
 ENTRYPOINT ["./init.sh"]
 # CMD ["/usr/sbin/vsftpd"]
 

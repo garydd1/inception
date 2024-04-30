@@ -1,5 +1,6 @@
 # Use the Debian 11.8 base image
-FROM debian:11.8
+# FROM debian:11.8
+FROM baseimage
 
 
 # Install PHP and required extensions
@@ -20,9 +21,9 @@ RUN mkdir -p /var/www/html
 #COPY wp-config.php /var/www/html
 COPY tools/init.sh .
 
-# Install Tini
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
-RUN chmod +x /tini
+# # Install Tini
+# ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
+# RUN chmod +x /tini
 #Install WP-CLI
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && \
@@ -30,7 +31,7 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 
 
 # Use tini as the entrypoint
-ENTRYPOINT ["/tini", "--"]
+# ENTRYPOINT ["/tini", "--"]
 
 
 RUN mkdir -p /run/php/
