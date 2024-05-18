@@ -5,7 +5,7 @@ services:
   build:
     context: ./requirements/wordpress
     dockerfile: Dockerfile
-  image: wordpress
+  image: wordpress_ima
   volumes:
     - /home/dgarizad/data/wpsite:/var/www/html
   restart: always
@@ -22,7 +22,7 @@ services:
     build:
       context: ./requirements/mariaDB/
       dockerfile: Dockerfile
-    image: mariadb
+    image: mariadb_ima
     restart: always
     expose:
      - 3306
@@ -37,7 +37,7 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
-    image: nginx
+    image: nginx_ima
     restart: always
     env_file: .env
     volumes:
@@ -55,7 +55,7 @@ services:
     build:
       context: ./requirements/bonus/redis
       dockerfile: Dockerfile
-    image: redis
+    image: redis_ima
     restart: always
     env_file: .env
     container_name: rediscontainer
@@ -66,7 +66,7 @@ services:
     build:
       context: ./requirements/bonus/ftp
       dockerfile: Dockerfile
-    image: ftp
+    image: ftp_ima
     restart: always
     # depends_on:
     #   - wordpress
@@ -84,7 +84,7 @@ services:
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile
-    image: adminer
+    image: adminer_ima
     restart: always
     depends_on:
       - mariadb
@@ -99,7 +99,7 @@ services:
     build:
       context: ./requirements/bonus/static
       dockerfile: Dockerfile
-    image: static
+    image: static_ima
     restart: always
     depends_on:
       - mariadb
@@ -114,7 +114,7 @@ services:
     build:
       context: ./requirements/bonus/extra
       dockerfile: Dockerfile
-    image: extra
+    image: extra_ima
     restart: always
     depends_on:
       - mariadb
@@ -132,7 +132,7 @@ services:
 
 
 volumes:
-  wordpress:
+  wordpress-data:
    driver: local
    driver_opts:
            device: /home/dgarizad/data/wpsite
